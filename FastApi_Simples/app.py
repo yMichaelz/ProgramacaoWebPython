@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
@@ -20,14 +21,35 @@ PRODUTOS = [
     }
 ]
 
+### Inicialização de classes ###
+
 class Produto(BaseModel):
-    """Clase de produto"""
+    """Clase de produto."""
     
     id: int
     nome: str
     descricao: str = None
     preco: float
     disponivel: bool = True
+    
+class Cliente(BaseModel):
+    """Classe de cliente."""
+    
+    id: int
+    nome: str
+    telefone: str = None
+    
+class Pedido(BaseModel):
+    """Classe de pedido."""
+    id: int
+    cliente_id: int
+    produtos: List[int]
+    Status: str = "Pendente" # Pendente, Pago, Cancelado.
+    
+
+
+
+### Inicialização de Rotas ###
 
 @app.get("/produtos", tags=["produtos"])
 def listar_produtos() -> list:
@@ -48,11 +70,19 @@ def criar_produto(produto: Produto) -> Produto:
     PRODUTOS.append(produto)
     return produto
 
-@app.put("/produtos/{produto_id}")
+@app.put("/produtos/{produto_id}", tags=["produtos"])
 def atualizar_produto(produto_id: int, produto: Produto) -> dict:
     """Atualizar produto."""
     for index, prod in enumerate(PRODUTOS):
         if prod["id"] == produto_id:
             PRODUTOS[index] = produto
             return produto
+    return {}
+
+@app.delete("/produtos/{produto_id}", tags=["produtos"])
+def remover_produto(produto_id: int) ->dict:
+    for index, prod in enumerate(PRODUTOS):
+        if prod["id"] == produto_id:
+            PRODUTOS.pop(index)
+            return {"message": "Produto removido com sucesso"}
     return {}
