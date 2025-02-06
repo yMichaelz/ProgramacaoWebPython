@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 # Schemas para Cursos
 class CursoBase(BaseModel):
@@ -34,3 +34,30 @@ class AlunoResponse(AlunoBase):
 
     class Config:
         orm_mode = True
+
+class UsuarioBase(BaseModel):
+    nome: str
+    email: EmailStr
+
+class UsuarioCreate(UsuarioBase):
+    senha: str
+
+class UsuarioResponse(UsuarioBase):
+    id: int
+    foto_perfil: str | None = None
+
+    class Config:
+        orm_mode = True
+
+class UsuarioLogin(BaseModel):
+    email: EmailStr
+    senha: str
+    
+class UsuarioCreate(BaseModel):
+    nome: str
+    email: EmailStr
+    senha: str
+
+class Login(BaseModel):
+    email: str
+    senha: str

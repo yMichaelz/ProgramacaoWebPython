@@ -23,3 +23,12 @@ class Aluno(Base):
 
     # Relacionamento com o curso
     curso = relationship("Curso", back_populates="alunos")
+    
+class Usuario(Base):
+    __tablename__ = "usuarios"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    senha_hash = Column(String)
+    foto_perfil = Column(String, nullable=True)

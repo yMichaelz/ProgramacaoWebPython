@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Autenticada</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ usuario.nome }}</h1>
+    <img src="{{ usuario.foto_perfil }}" alt="Foto de perfil" width="100">
+
+    <h2>Gerenciar Cursos</h2>
+
+    <!-- Formulário para adicionar um novo curso -->
+    <form action="/cursos/" method="post">
+        <input type="text" name="nome" placeholder="Nome do Curso" required>
+        <input type="text" name="descricao" placeholder="Descrição">
+        <button type="submit">Adicionar Curso</button>
+    </form>
+
+    <h3>Cursos Cadastrados</h3>
+    <ul>
+        {% for curso in cursos %}
+            <li>
+                {{ curso.id }} - {{ curso.nome }}: {{ curso.descricao }}
+                <form action="/cursos/{{ curso.id }}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="PUT">
+                    <input type="text" name="nome" placeholder="Novo Nome">
+                    <input type="text" name="descricao" placeholder="Nova Descrição">
+                    <button type="submit">Atualizar</button>
+                </form>
+                <form action="/cursos/{{ curso.id }}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Remover</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="/logout">Sair</a>
+</body>
+</html>

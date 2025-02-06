@@ -1,5 +1,12 @@
 fastapi
 uvicorn
-psycopg2-binary
 sqlalchemy
 jinja2
+python-dotenv
+bcrypt
+passlib
+pyjwt
+psycopg2-binary
+email-validator
+python-jose[cryptography]
+python-multipart
